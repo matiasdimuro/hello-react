@@ -2,6 +2,8 @@ const express  = require('express');
 const mongoose = require('mongoose');
 const cors     = require('cors');
 const morgan   = require('morgan');
+// path es un modulo base de NodeJS, no hay que instalarlo con npm
+const path = require('path');
 
 // config vars
 const port = process.env.PORT        || 4000;
@@ -19,6 +21,12 @@ mongoose
     console.log(`DB connected @ ${db}`);
   })
   .catch(err => console.error(`Connection error ${err}`));
+
+// despues de conectarse a la base de datos
+app.use(express.static('public'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // middlewares (antes del listen)
 // los middlewares se ejecutan en orden para todas las peticiones
